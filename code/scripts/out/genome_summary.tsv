@@ -1,0 +1,7 @@
+partition	metric	value
+<=100kb	total_nucleotides	6178042
+<=100kb	total_Ns	662593
+<=100kb	total_sequences	1863
+>100kb	total_nucleotides	137547960
+>100kb	total_Ns	490385
+>100kb	total_sequences	7
