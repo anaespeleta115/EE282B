@@ -1,0 +1,25 @@
+#!/bin/bash
+#SBATCH --account=ecoevo282_class
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=64G
+#SBATCH --time=24:00:00
+#SBATCH --output=hifiasm_%j.out
+#SBATCH --error=hifiasm_%j.err
+
+set -euo pipefail
+
+# Initialize conda/mamba in this non-interactive shell
+source /dfs6b/pub/aespelet/miniforge3/etc/profile.d/conda.sh
+
+# Activate environment
+conda activate ee282
+
+# Debugging checks
+
+which hifiasm
+
+# Run hifiasm
+hifiasm \
+    -o hifi_fly_assembly \
+    -t ${SLURM_CPUS_PER_TASK} \
+    /pub/jje/ee282/ISO_HiFi_Shukla2025.fasta.gz
