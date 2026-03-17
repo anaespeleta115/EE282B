@@ -288,8 +288,9 @@ I:0.00%, 0
 M:0.00%, 0
 N:5066
 ```
+
+And for my assembly:
 ```
-And for the my assembly:
 ## lineage: diptera_odb12
 S:99.39%, 5035
 D:0.39%, 20
