@@ -265,13 +265,13 @@ Finally, I ran compleasm in the following way:
 compleasm run \
   -a ./out/hifi_fly_assembly.bp.p_ctg.fa \
   -o ./out/compleasm/my_assembly \
-  -L diptera \
+  -l diptera \
   -t 16
 
 compleasm run \
   -a ./out/flybase_scaffolds.fa \
   -o ./out/compleasm/flybase_scaffolds \
-  -L diptera \
+  -l diptera \
   -t 16
 ```
 Which then stores results inside the summary.txt file inside each of the following paths:
