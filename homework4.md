@@ -66,6 +66,8 @@ partition	    metric	      value
 >100kb	  total_Ns	        490385
 >100kb	  total_sequences	  7
 
+From these values, we observe that the majority of the genome is contained in a small number of sequences, which account for nearly all nucleotides. 
+
 ### Part 2: Plot the length and GC content distributions
 
 #### Calculate the length and GC content using bioawk:
@@ -127,6 +129,8 @@ ggplot(df, aes(x = gc_percent)) +
 
 ```
 
+The length distribution plot shows a right skew, which means that there are many short sequences and very few large sequences. The GC content distribution plot shows that most sequences have around ~40% GC content, which is consistent with the numbers I found when looking it up online.
+
 #### Use plotCDF script to plot cumulative sequence size:
 
 ```{bash, eval=FALSE}
@@ -149,6 +153,8 @@ out/cdf_le_100kb.png
 out/lengths_gt_100kb.txt \
 out/cdf_gt_100kb.png
 ```
+
+The CDF plots also confirm that the majority of total sequence length is made up by a few large sequences.
 
 These plots are all stored inside /code/scripts/out/, under the following names:
 
@@ -193,6 +199,8 @@ I ran it using the sbatch command:
 sbatch ./run_hifiasm
 ```
 
+The output of this run is the hifi_fly_assembly.bp.p_ctg.gfa file.
+
 ### Part 4: Assembly assessment
 
 #### Calculate N50s:
@@ -204,7 +212,7 @@ awk '/^S/{print ">"$2; print $3}' hifi_fly_assembly.bp.p_ctg.gfa > hifi_fly_asse
 ```
 Next, I made a script called assembly_assessment.sh, which gets the contig lengths, sorts lengths from smallest to largest, and computes the N50. 
 
-After running the assessment script, I got that my N50 was 21.7 Mb, while the reference's was 21.5 Mb.
+After running the assessment script, I got that my N50 was 21.7 Mb, while the reference's was 21.5 Mb. These values are very close, which indicates that there is high contiguity.
 
 #### Plot the assembly assessment:
 
@@ -246,11 +254,13 @@ bioawk -c fastx '{ print length($seq) }' "$OUTDIR/flybase_contigs.fa" \
 "$OUTDIR/contiguity_plot2.png"
 ```
 
+This plot shows that the FlyBase scaffold has the highest contiguity, then my assembly, which indicates that most of the genomes are contained in a small number of large sequences. The FlyBase contig assembly is much more fragmented than the other two, showing a much lower contiguity. 
+
 #### Calculate BUSCO scores (compleasm)
 
 I couldn't get BUSCO to work, so I tried compleasm instead. 
 
-First, I made a compleasm env and downloaded it using conda.
+First, I made a compleasm environment and downloaded it using conda.
 
 ```{bash, eval=FALSE}
 mamba create -n compleasm_env -c bioconda -c conda-forge compleasm
@@ -299,3 +309,5 @@ I:0.00%, 0
 M:0.08%, 4
 N:5066
 ```
+
+Both assemblies showed very high completeness, with the FlyBase assembly recovering all BUSCO genes and my assmbly recovering up to 5062 out of 5066 total genes. This indicates that my assembly captured nearly all dipteran genes and is highly complete. 
